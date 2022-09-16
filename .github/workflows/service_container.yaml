@@ -4,6 +4,7 @@ on: push
 jobs: 
   container-job:
     runs-on: ubuntu-latest
+    container: ubuntu
     services: 
       jetstream:
         image: nats:alpine
@@ -21,6 +22,9 @@ jobs:
         chmod a+x ${{ github.workspace }}/.github/workflows/entrypoint.sh
         docker cp ${{ github.workspace }}/.github/workflows/entrypoint.sh jetstream:/usr/local/bin/docker-entrypoint.sh
         docker restart jetstream
+        docker ps 
+    
     - name: http request from agent to service container
-      run: curl http://localhost:8222/jsz
-      
+      run: |
+        apt-get update; apt-get install curl -y
+        curl http://localhost:8222/jsz
