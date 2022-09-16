@@ -24,7 +24,6 @@ jobs:
         docker ps 
     
     - name: http request from agent to service container
-      uses: docker://ubuntu
-      run: |
-        apt-get update; apt-get install curl -y
-        curl http://localhost:8222/jsz
+      uses: wei/curl@master
+      with: 
+        args: http://localhost:8222/jsz
