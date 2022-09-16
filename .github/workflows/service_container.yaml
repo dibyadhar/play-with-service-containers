@@ -24,5 +24,6 @@ jobs:
         docker ps 
     
     - name: http request from agent to service container
-      run: curl http://0.0.0.0:8222/jsz
+      run: docker ps
+    - run: curl http://localhost:8222/jsz
  
