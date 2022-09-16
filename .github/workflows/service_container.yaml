@@ -3,12 +3,24 @@ on: push
 
 jobs: 
   container-job:
-  runs-on: ubuntu-latest
-  services: 
-    nginx:
-      image: nginx:latest
-      ports: 80:80
+    runs-on: ubuntu-latest
+    services: 
+      jetstream:
+        image: nats:alpine
+        options: --name jetstream
+        ports: 
+          - 4222:4222
+          - 8222:8222
 
-  steps:
-    - name: Connect to nginx
-      run: curl localhost:80
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    
+    - name: start_jetstream
+      run: |
+        chmod a+x ${{ github.workspace }}/.github/workflows/entrypoint.sh
+        docker cp ${{ github.workspace }}/.github/workflows/entrypoint.sh jetstream:/usr/local/bin/docker-entrypoint.sh
+        docker restart jetstream
+    - name: http request from agent to service container
+      run: curl http://localhost:8222/jsz
+      
