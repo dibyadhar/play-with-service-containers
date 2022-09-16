@@ -16,14 +16,13 @@ jobs:
     - name: checkout
       uses: actions/checkout@v3
     
-    - name: start_jetstream
-      run: |
-        chmod a+x ${{ github.workspace }}/.github/workflows/entrypoint.sh
-        docker cp ${{ github.workspace }}/.github/workflows/entrypoint.sh jetstream:/usr/local/bin/docker-entrypoint.sh
-        docker restart jetstream
-        docker ps 
+    # - name: start_jetstream
+    #   run: |
+    #     chmod a+x ${{ github.workspace }}/.github/workflows/entrypoint.sh
+    #     docker cp ${{ github.workspace }}/.github/workflows/entrypoint.sh jetstream:/usr/local/bin/docker-entrypoint.sh
+    #     docker restart jetstream
+    #     docker ps 
     
     - name: http request from agent to service container
-      uses: wei/curl@master
-      with: 
-        args: http://localhost:8222/jsz
+      run: sudo apt-get update && sudo apt-get install -y curl
+    - run: curl http://localhost:8222/jsz
