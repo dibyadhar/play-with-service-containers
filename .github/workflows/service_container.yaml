@@ -1,0 +1,14 @@
+name: Play with Service Container
+on: push
+
+jobs: 
+  container-job:
+  runs-on: ubuntu-latest
+  services: 
+    nginx:
+      image: nginx:latest
+      ports: 80:80
+
+  steps:
+    - name: Connect to nginx
+      run: curl localhost:80
